@@ -1,12 +1,10 @@
 @echo off
-gcc -Wall -Wextra conway.c -o conway.exe
+gcc -Wall -Wextra main.c chashmap.c -o hashmap.exe
 
 if errorlevel 1 (
-    echo Fehler
-    pause
     exit /b
 )
 
-conway.exe
+hashmap.exe
 
 echo.
