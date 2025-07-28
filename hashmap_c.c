@@ -45,10 +45,35 @@ void *get_entry(HashMap *map, const char *key) {
   Entry *entry = map->buckets[index];
 
   while (entry) {
-    if (strcmp(entry->key, key)) {
+    if (strcmp(entry->key, key) == 0) {
       return entry->value;
     }
     entry = entry->next;
   }
   return NULL;
+}
+
+bool remove_entry(HashMap *map, const char *key) {
+  unsigned long index = hash(key) % map->capacity;
+  Entry *entry = map->buckets[index];
+  Entry *prev = NULL;
+
+  while (entry) {
+    if (strcmp(entry->key, key) == 0) {
+      if (prev) {
+        prev->next = entry->next;
+      } else {
+        map->buckets[index] = entry->next;
+      }
+
+      free(entry->key);
+      free(entry);
+      map->size--;
+
+      return true;
+    }
+    prev = entry;
+    entry = entry->next;
+  }
+  return false;
 }
